@@ -1,0 +1,13 @@
+{
+  "name": "com.unity.vvutility",
+  "displayName": "VV Utility",
+  "version": "0.0.1",
+  "unity": "6000.0",
+  "description": "",
+  "dependencies": {},
+  "keywords": [
+    "UI"
+  ],
+  "type": "tool",
+  "_fingerprint": "27797f8c7ccf70a1faa04f71158dee840f3f4ae2"
+}
