@@ -1,5 +1,5 @@
 {
-  "name": "com.unity.vvutility",
+  "name": "com.vv.utility",
   "displayName": "VV Utility",
   "version": "0.0.1",
   "unity": "6000.0",
@@ -9,5 +9,5 @@
     "UI"
   ],
   "type": "tool",
-  "_fingerprint": "27797f8c7ccf70a1faa04f71158dee840f3f4ae2"
+  "_fingerprint": "69536dcb0e58beb385412998218a112419154bfa"
 }
