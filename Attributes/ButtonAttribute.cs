@@ -150,42 +150,42 @@ namespace VV.Utility
 
                     // If no editor targets, just add container empty
                     var targets = editor.targets;
-                    if (targets != null && targets.Length > 0)
-                    {
-                        // Use first target's type to enumerate methods (targets are same type when multi-selected of same type)
-                        var type = targets[0].GetType();
-                        var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-                        foreach (var method in methods)
-                        {
-                            var attr = method.GetCustomAttribute<ButtonAttribute>();
-                            if (attr is not { engine: AttributeEngine.UIToolkit }) continue;
-                            if (method.GetParameters().Length > 0) continue; // skip parameterized
-
-                            string label = string.IsNullOrEmpty(attr.name) ? ObjectNames.NicifyVariableName(method.Name) : attr.name;
-
-                            var btn = new Button(() =>
-                            {
-                                foreach (var t in editor.targets)
-                                {
-                                    try { method.Invoke(t, null); }
-                                    catch (Exception ex) { Debug.LogException(ex); }
-                                }
-                            })
-                            {
-                                text = label
-                            };
-
-                            btn.style.height = attr.size;
-                            btn.style.marginTop = attr.space;
-                            btn.style.marginBottom = attr.space;
-
-                            if (ColorUtility.TryParseHtmlString(attr.color, out var parsedColor))
-                                btn.style.backgroundColor = new StyleColor(parsedColor);
-
-                            container.Add(btn);
-                        }
-                    }
+                    // if (targets != null && targets.Length > 0)
+                    // {
+                    //     // Use first target's type to enumerate methods (targets are same type when multi-selected of same type)
+                    //     var type = targets[0].GetType();
+                    //     var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    //
+                    //     foreach (var method in methods)
+                    //     {
+                    //         var attr = method.GetCustomAttribute<ButtonAttribute>();
+                    //         if (attr is not { engine: AttributeEngine.UIToolkit }) continue;
+                    //         if (method.GetParameters().Length > 0) continue; // skip parameterized
+                    //
+                    //         string label = string.IsNullOrEmpty(attr.name) ? ObjectNames.NicifyVariableName(method.Name) : attr.name;
+                    //
+                    //         var btn = new Button(() =>
+                    //         {
+                    //             foreach (var t in editor.targets)
+                    //             {
+                    //                 try { method.Invoke(t, null); }
+                    //                 catch (Exception ex) { Debug.LogException(ex); }
+                    //             }
+                    //         })
+                    //         {
+                    //             text = label
+                    //         };
+                    //
+                    //         btn.style.height = attr.size;
+                    //         btn.style.marginTop = attr.space;
+                    //         btn.style.marginBottom = attr.space;
+                    //
+                    //         if (ColorUtility.TryParseHtmlString(attr.color, out var parsedColor))
+                    //             btn.style.backgroundColor = new StyleColor(parsedColor);
+                    //
+                    //         container.Add(btn);
+                    //     }
+                    // }
 
                     // Attach container to the inspector element (at the end)
                     ie.Add(container);
