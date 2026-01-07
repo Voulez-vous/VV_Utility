@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine.UIElements;
 
 namespace VV.UIToolkitVisualScripting
