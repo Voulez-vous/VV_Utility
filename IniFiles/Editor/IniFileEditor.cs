@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 
 namespace IniFiles.Editor
 {
@@ -34,3 +35,4 @@ namespace IniFiles.Editor
         }
     }
 }
+#endif

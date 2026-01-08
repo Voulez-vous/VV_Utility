@@ -1,8 +1,12 @@
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VV.Scoring.Editor
 {
+    #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(SerializedValueWrapper))]
     public class SerializedValueWrapperDrawer : PropertyDrawer
     {
@@ -25,4 +29,5 @@ namespace VV.Scoring.Editor
             EditorGUI.PropertyField(position, valProp, label, true);
         }
     }
+    #endif
 }

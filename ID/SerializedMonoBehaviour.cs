@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using VV.Utility;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VV.ID
 {

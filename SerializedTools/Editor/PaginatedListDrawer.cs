@@ -1,10 +1,14 @@
 using System;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VV.Utility.SerializedTools
 {
+    #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(PaginatedSerializedList<>), true)]
     public class PaginatedListDrawer : PropertyDrawer
     {
@@ -226,4 +230,5 @@ namespace VV.Utility.SerializedTools
             x += fieldWidth + gap;
         }
     }
+    #endif
 }

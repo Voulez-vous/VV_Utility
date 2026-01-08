@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using UnityEditor;
 using Object = UnityEngine.Object;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VV.Utility
 {
     public static class SerializedPropertyExtensions
     {
+        #if UNITY_EDITOR
+        
         /// <summary>
         /// Get the specific object underneath the property.
         /// </summary>
@@ -119,5 +124,7 @@ namespace VV.Utility
 
             return null;
         }
+        
+        #endif
     }
 }

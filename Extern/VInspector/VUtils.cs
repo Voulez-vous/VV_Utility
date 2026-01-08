@@ -7,17 +7,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace VV.Extern.Utility
 {
     public static class VUtils
     {
-
         #region Reflection
-
 
         public static object GetFieldValue(this object o, string fieldName)
         {
@@ -1340,14 +1341,7 @@ namespace VV.Extern.Utility
         public static string GetScriptPath(string scriptName) =>
             AssetDatabase.FindAssets("t: script " + scriptName, null).FirstOrDefault()?.ToPath() ??
             "scirpt not found"; // todonow to editorutils
-
-
-
 #endif
-
-
-
-
 
         #endregion
 
@@ -1370,7 +1364,6 @@ namespace VV.Extern.Utility
                     keys.Add(kvp.Key);
                     values.Add(kvp.Value);
                 }
-
             }
 
             public void OnAfterDeserialize()
@@ -1379,7 +1372,6 @@ namespace VV.Extern.Utility
 
                 for (int i = 0; i < keys.Count; i++)
                     this[keys[i]] = values[i];
-
             }
 
         }

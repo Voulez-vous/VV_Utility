@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if UNITY_EDITOR
+using System.IO;
 using UnityEditor.AssetImporters;
 
 namespace IniFiles.Editor {
@@ -14,3 +15,4 @@ namespace IniFiles.Editor {
         }
     }
 }
+#endif
