@@ -19,7 +19,7 @@ namespace VV.ID
         protected bool keepPrefabID;
         
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (keepPrefabID) return;
 
