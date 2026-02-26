@@ -194,10 +194,60 @@ namespace VV.Utility
 
         // Converts a Vector2 to a Vector3 with a y value of 0.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 ToVector3(this Vector2 v2) => new Vector3(v2.x, 0, v2.y);
+        public static Vector3 xOy(this Vector2 v2) => new Vector3(v2.x, 0f, v2.y);
+        
+        // Converts a Vector2 to a Vector3 with a Z value of 0.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 xyO(this Vector2 v2) => new Vector3(v2.x, v2.y, 0f);
+        
+        // Converts a Vector2 to a Vector3 with an X value of 0.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 Oxy(this Vector2 v2) => new Vector3(0f, v2.x, v2.y);
+        
+        // Converts a Vector2 to a Vector3 with a Y value of 0.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 yOx(this Vector2 v2) => new Vector3(v2.y, 0f, v2.x);
+        
+        // Converts a Vector2 to a Vector3 with a Y value of 0.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 yxO(this Vector2 v2) => new Vector3(v2.y, v2.x, 0f);
+        
+        // Converts a Vector2 to a Vector3 with a Y value of 0.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 Oyx(this Vector2 v2) => new Vector3(0f, v2.y, v2.x);
         
         // Converts a Vector2 to a Vector3 with a y value of 0.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ToVector2(this (float, float) d) => new Vector2(d.Item1, d.Item2);
     }
+    
+        #region staticDirections
+
+    public static class VVector2
+    {
+        public static readonly Vector2 zero      = new(0f, 0f);
+        
+        public static readonly Vector2 up      = new(0f, 1f);
+        public static readonly Vector2 down    = new(0f, -1f);
+        public static readonly Vector2 right   = new(1f, 0f);
+        public static readonly Vector2 left    = new(-1f, 0f);
+
+        public static readonly Vector2 up_right   = new(1f, 1f);
+        public static readonly Vector2 down_right = new(1f, -1f);
+        public static readonly Vector2 down_left  = new(-1f, -1f);
+        public static readonly Vector2 up_left    = new(-1f, 1f);
+        
+        // NORMALIZED
+
+        public static readonly float root2Inv = 0.70710678118f;
+        public static readonly float root3Inv = 0.577350259f;
+        
+        // XY
+        public static readonly Vector2 up_right_normalized   = new(root2Inv, root2Inv);
+        public static readonly Vector2 down_right_normalized = new(root2Inv, -root2Inv);
+        public static readonly Vector2 down_left_normalized  = new(-root2Inv, -root2Inv);
+        public static readonly Vector2 up_left_normalized    = new(-root2Inv, root2Inv);
+    }
+
+    #endregion
 }

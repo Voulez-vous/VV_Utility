@@ -185,4 +185,82 @@ namespace VV.Utility
 
         #endregion Conversion
     }
+    
+    #region staticDirections
+
+    public static class VVector3
+    {
+        public static readonly Vector3 zero      = new(0f, 0f, 0f);
+        
+        public static readonly Vector3 up      = new(0f, 1f, 0f);
+        public static readonly Vector3 down    = new(0f, -1f, 0f);
+        public static readonly Vector3 right   = new(1f, 0f, 0f);
+        public static readonly Vector3 left    = new(-1f, 0f, 0f);
+        public static readonly Vector3 forward = new(0f, 0f, 1f);
+        public static readonly Vector3 back    = new(0f, 0f, -1f);
+
+        // XY
+        public static readonly Vector3 up_right   = new(1f, 1f, 0f);
+        public static readonly Vector3 down_right = new(1f, -1f, 0f);
+        public static readonly Vector3 down_left  = new(-1f, -1f, 0f);
+        public static readonly Vector3 up_left    = new(-1f, 1f, 0f);
+
+        // YZ
+        public static readonly Vector3 up_forward   = new(0f, 1f, 1f);
+        public static readonly Vector3 down_forward = new(0f, -1f, 1f);
+        public static readonly Vector3 down_back    = new(0f, -1f, -1f);
+        public static readonly Vector3 up_back      = new(0f, 1f, -1f);
+
+        // XZ
+        public static readonly Vector3 right_forward = new(1f, 0f, 1f);
+        public static readonly Vector3 right_back    = new(1f, 0f, -1f);
+        public static readonly Vector3 left_back     = new(-1f, 0f, -1f);
+        public static readonly Vector3 left_forward  = new(-1f, 0f, 1f);
+
+        // XYZ
+        public static readonly Vector3 right_up_forward   = new(1f, 1f, 1f);
+        public static readonly Vector3 right_down_forward = new(1f, -1f, 1f);
+        public static readonly Vector3 right_up_back      = new(1f, 1f, -1f);
+        public static readonly Vector3 right_down_back    = new(1f, -1f, -1f);
+        public static readonly Vector3 left_up_forward    = new(-1f, 1f, 1f);
+        public static readonly Vector3 left_down_forward  = new(-1f, -1f, 1f);
+        public static readonly Vector3 left_up_back       = new(-1f, 1f, -1f);
+        public static readonly Vector3 left_down_back     = new(-1f, -1f, -1f);
+        
+        
+        // NORMALIZED
+
+        public static readonly float root2Inv = 0.70710678118f;
+        public static readonly float root3Inv = 0.577350259f;
+        
+        // XY
+        public static readonly Vector3 up_right_normalized   = new(root2Inv, root2Inv, 0f);
+        public static readonly Vector3 down_right_normalized = new(root2Inv, -root2Inv, 0f);
+        public static readonly Vector3 down_left_normalized  = new(-root2Inv, -root2Inv, 0f);
+        public static readonly Vector3 up_left_normalized    = new(-root2Inv, root2Inv, 0f);
+
+        // YZ
+        public static readonly Vector3 up_forward_normalized   = new(0f, root2Inv, root2Inv);
+        public static readonly Vector3 down_forward_normalized = new(0f, -root2Inv, root2Inv);
+        public static readonly Vector3 down_back_normalized    = new(0f, -root2Inv, -root2Inv);
+        public static readonly Vector3 up_back_normalized      = new(0f, root2Inv, -root2Inv);
+
+        // XZ
+        public static readonly Vector3 right_forward_normalized = new(root2Inv, 0f, root2Inv);
+        public static readonly Vector3 right_back_normalized    = new(root2Inv, 0f, -root2Inv);
+        public static readonly Vector3 left_back_normalized     = new(-root2Inv, 0f, -root2Inv);
+        public static readonly Vector3 left_forward_normalized  = new(-root2Inv, 0f, root2Inv);
+
+        // XYZ
+        public static readonly Vector3 right_up_forward_normalized   = new(root3Inv, root3Inv, root3Inv);
+        public static readonly Vector3 right_down_forward_normalized = new(root3Inv, -root3Inv, root3Inv);
+        public static readonly Vector3 right_up_back_normalized      = new(root3Inv, root3Inv, -root3Inv);
+        public static readonly Vector3 right_down_back_normalized    = new(root3Inv, -root3Inv, -root3Inv);
+        public static readonly Vector3 left_up_forward_normalized    = new(-root3Inv, root3Inv, root3Inv);
+        public static readonly Vector3 left_down_forward_normalized  = new(-root3Inv, -root3Inv, root3Inv);
+        public static readonly Vector3 left_up_back_normalized       = new(-root3Inv, root3Inv, -root3Inv);
+        public static readonly Vector3 left_down_back_normalized     = new(-root3Inv, -root3Inv, -root3Inv);
+    }
+
+    #endregion
 }
