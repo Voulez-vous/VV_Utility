@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using VV.Utility;
+#if !UNITY_EDITOR && UNITY_WEBGL
+using System.Threading.Tasks;
+#endif
 
 namespace IniFiles
 {
