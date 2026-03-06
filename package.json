@@ -1,7 +1,7 @@
 {
   "name": "com.vv.utility",
   "displayName": "VV Utility",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "unity": "6000.0",
   "description": "",
   "dependencies": {},
@@ -9,5 +9,5 @@
     "UI"
   ],
   "type": "tool",
-  "_fingerprint": "69536dcb0e58beb385412998218a112419154bfa"
+  "_fingerprint": "4b4ab53703c70f173bde8de5eb4ca483a754ad86"
 }
