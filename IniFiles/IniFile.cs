@@ -5,6 +5,7 @@ using UnityEngine;
 using VV.Utility;
 #if !UNITY_EDITOR && UNITY_WEBGL
 using System.Threading.Tasks;
+using UnityEngine.Networking;
 #endif
 
 namespace IniFiles
