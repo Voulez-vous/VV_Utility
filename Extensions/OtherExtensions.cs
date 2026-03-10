@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace DA_Assets.Extensions
+namespace VV.DA_Assets.Extensions
 {
     public static class OtherExtensions
     {
