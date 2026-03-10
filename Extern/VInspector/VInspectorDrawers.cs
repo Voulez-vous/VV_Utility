@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using static VV.Extern.Utility.VUtils;
-using static VInspector.Libs.VGUI;
+using static VV.VInspector.Libs.VGUI;
 // using static VTools.VDebug;
 
 
-namespace VInspector
+namespace VV.VInspector
 {
     [CustomPropertyDrawer(typeof(SerializedDictionary<,>), true)]
     public class SerializedDictionaryDrawer : PropertyDrawer

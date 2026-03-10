@@ -3,9 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-namespace VInspector
+namespace VV.VInspector
 {
     [System.Serializable]
     public class SerializedDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
@@ -47,8 +45,6 @@ namespace VInspector
 
         }
 
-
-
         [System.Serializable]
         public class SerializedKeyValuePair<TKey_, TValue_>
         {
@@ -65,9 +61,6 @@ namespace VInspector
 
             public static implicit operator SerializedKeyValuePair<TKey_, TValue_>(KeyValuePair<TKey_, TValue_> kvp) => new(kvp.Key, kvp.Value);
             public static implicit operator KeyValuePair<TKey_, TValue_>(SerializedKeyValuePair<TKey_, TValue_> kvp) => new(kvp.Key, kvp.Value);
-
         }
-
     }
-
 }

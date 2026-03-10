@@ -12,10 +12,9 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using UnityEngine.UIElements;
 using Type = System.Type;
-using static VInspector.Libs.VUtils;
+using static VV.VInspector.Libs.VUtils;
 
-
-namespace VInspector.Libs
+namespace VV.VInspector.Libs
 {
     public static class VUtils
     {
@@ -2532,6 +2531,5 @@ namespace VInspector.Libs
         #endregion
 
     }
-
 }
 #endif
