@@ -8,6 +8,7 @@ using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine.Events;
 #endif
 
 namespace VV.Utility
@@ -16,12 +17,19 @@ namespace VV.Utility
     public class ButtonAttribute : Attribute
     {
         public string name;
-        public int size = 30;
-        public int space = 0;
-        public string color = "grey";
+        public int size;
+        public int space;
+        public Color color;
         public AttributeEngine engine = AttributeEngine.ImGui;
 
-        public ButtonAttribute() { }
+        public ButtonAttribute(string name = "", int size = 20, int space = 0, string color = "gray", AttributeEngine engine = AttributeEngine.ImGui)
+        {
+            this.name = name;
+            this.size = size;
+            this.space = space;
+            this.color = ColorUtility.TryParseHtmlString(color, out Color parsedColor) ? parsedColor : Color.gray;
+        }
+        
         public ButtonAttribute(string name) => this.name = name;
     }
     
@@ -42,9 +50,8 @@ namespace VV.Utility
             EditorApplication.update += OnEditorUpdate;
         }
 
-        // ------------------------
-        // IMGUI: draw buttons in the header area after the default header
-        // ------------------------
+        #region IMGUI
+
         private static void OnPostHeaderGUI(Editor editor)
         {
             if (editor == null) return;
@@ -59,6 +66,7 @@ namespace VV.Utility
             foreach (MethodInfo method in methods)
             {
                 var attr = method.GetCustomAttribute<ButtonAttribute>();
+                if(attr == null) continue;
                 if (attr is not { engine: AttributeEngine.ImGui }) continue;
                 if (method.GetParameters().Length > 0)
                 {
@@ -69,8 +77,8 @@ namespace VV.Utility
                 GUILayout.Space(attr.space);
 
                 Color prevColor = GUI.backgroundColor;
-                if (ColorUtility.TryParseHtmlString(attr.color, out Color parsedColor))
-                    GUI.backgroundColor = parsedColor;
+                
+                GUI.backgroundColor = attr.color;
 
                 var label = string.IsNullOrEmpty(attr.name) ? ObjectNames.NicifyVariableName(method.Name) : attr.name;
 
@@ -87,9 +95,10 @@ namespace VV.Utility
             }
         }
 
-        // ------------------------
-        // UIToolkit: attach buttons into inspector VisualElements
-        // ------------------------
+        #endregion
+
+        #region UI Toolkit
+
         private static void OnEditorUpdate()
         {
             // Find all open inspector windows
@@ -128,7 +137,7 @@ namespace VV.Utility
                     if (editor == null) continue;
 
                     // Determine primary target instance id (0 if none)
-                    var primary = editor.target;
+                    Object primary = editor.target;
                     int primaryId = primary != null ? primary.GetInstanceID() : 0;
 
                     // If we've already attached for this element + same target, skip
@@ -137,7 +146,7 @@ namespace VV.Utility
                     s_attached[key] = primaryId;
 
                     // Remove existing container if present (rebuild)
-                    var existing = ie.Q("button-attribute-container");
+                    VisualElement existing = ie.Q("button-attribute-container");
                     if (existing != null) existing.RemoveFromHierarchy();
 
                     // Build new container (column)
@@ -147,45 +156,6 @@ namespace VV.Utility
                     container.style.marginTop = 4;
                     container.style.paddingLeft = 2;
                     container.style.paddingRight = 2;
-
-                    // If no editor targets, just add container empty
-                    var targets = editor.targets;
-                    // if (targets != null && targets.Length > 0)
-                    // {
-                    //     // Use first target's type to enumerate methods (targets are same type when multi-selected of same type)
-                    //     var type = targets[0].GetType();
-                    //     var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    //
-                    //     foreach (var method in methods)
-                    //     {
-                    //         var attr = method.GetCustomAttribute<ButtonAttribute>();
-                    //         if (attr is not { engine: AttributeEngine.UIToolkit }) continue;
-                    //         if (method.GetParameters().Length > 0) continue; // skip parameterized
-                    //
-                    //         string label = string.IsNullOrEmpty(attr.name) ? ObjectNames.NicifyVariableName(method.Name) : attr.name;
-                    //
-                    //         var btn = new Button(() =>
-                    //         {
-                    //             foreach (var t in editor.targets)
-                    //             {
-                    //                 try { method.Invoke(t, null); }
-                    //                 catch (Exception ex) { Debug.LogException(ex); }
-                    //             }
-                    //         })
-                    //         {
-                    //             text = label
-                    //         };
-                    //
-                    //         btn.style.height = attr.size;
-                    //         btn.style.marginTop = attr.space;
-                    //         btn.style.marginBottom = attr.space;
-                    //
-                    //         if (ColorUtility.TryParseHtmlString(attr.color, out var parsedColor))
-                    //             btn.style.backgroundColor = new StyleColor(parsedColor);
-                    //
-                    //         container.Add(btn);
-                    //     }
-                    // }
 
                     // Attach container to the inspector element (at the end)
                     ie.Add(container);
@@ -203,11 +173,11 @@ namespace VV.Utility
         {
             try
             {
-                var type = inspectorElement.GetType();
+                Type type = inspectorElement.GetType();
 
                 // 1) "userData" already attempted earlier (common)
                 // 2) try property "editor"
-                var prop = type.GetProperty("editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                PropertyInfo prop = type.GetProperty("editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                 if (prop != null)
                 {
                     var val = prop.GetValue(inspectorElement);
@@ -215,8 +185,8 @@ namespace VV.Utility
                 }
 
                 // 3) try field "m_Editor" or "editor"
-                var field = type.GetField("m_Editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                         ?? type.GetField("editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                FieldInfo field = type.GetField("m_Editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                                  ?? type.GetField("editor", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                 if (field != null)
                 {
                     var val = field.GetValue(inspectorElement);
@@ -227,14 +197,14 @@ namespace VV.Utility
                 var maybeNames = new[] { "inspector", "targetEditor", "editorInstance" };
                 foreach (var name in maybeNames)
                 {
-                    var p = type.GetProperty(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                    PropertyInfo p = type.GetProperty(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     if (p != null)
                     {
                         var v = p.GetValue(inspectorElement);
                         if (v is Editor) return v;
                     }
 
-                    var f = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                    FieldInfo f = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     if (f != null)
                     {
                         var v2 = f.GetValue(inspectorElement);
@@ -250,27 +220,62 @@ namespace VV.Utility
 
             return null;
         }
+        #endregion
     }
     
     [CustomEditor(typeof(Object), true, isFallback = true)]
     public class ButtonAttributeEditor : Editor
     {
-        public override VisualElement CreateInspectorGUI()
-        {
-            // Default inspector
-            var root = new VisualElement();
-            InspectorElement.FillDefaultInspector(root, serializedObject, this);
+        private List<ButtonAttribute> buttonAttrList = new();
+        private int nbImguiAttrs;
+        private int nbUitkAttrs;
 
-            // Find all methods with [Button]
+        private bool useIMGUI => nbImguiAttrs >= nbUitkAttrs;
+
+        private UnityAction OnAttributesGathered;
+
+        private void GatherAttributes()
+        {
+            buttonAttrList.Clear();
+            nbImguiAttrs = 0;
+            nbUitkAttrs = 0;
             var methods = target.GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
+            
             foreach (MethodInfo method in methods)
             {
                 var buttonAttr = method.GetCustomAttribute<ButtonAttribute>();
+                if(buttonAttr == null) continue;
+                nbImguiAttrs += buttonAttr.engine == AttributeEngine.ImGui ? 1 : 0;
+                nbUitkAttrs += buttonAttr.engine == AttributeEngine.UIToolkit ? 1 : 0;
+                buttonAttrList.Add(buttonAttr);
+            }
+            
+            OnAttributesGathered?.Invoke();
+        }
+        
+        #region UI Toolkit
+
+        public override VisualElement CreateInspectorGUI()
+        {
+            GatherAttributes();
+            if(useIMGUI) return base.CreateInspectorGUI();
+            
+            // Default inspector
+            var root = new VisualElement();
+            InspectorElement.FillDefaultInspector(root, serializedObject, this);
+        
+            // Find all methods with [Button]
+            var methods = target.GetType()
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        
+            foreach (MethodInfo method in methods)
+            {
+                var buttonAttr = method.GetCustomAttribute<ButtonAttribute>();
+                if(buttonAttr == null) continue;
                 if (buttonAttr is not { engine: AttributeEngine.UIToolkit })
                     continue;
-
+        
                 var buttonName = string.IsNullOrEmpty(buttonAttr.name) ? method.Name : buttonAttr.name;
                 var button = new Button(() =>
                 {
@@ -282,18 +287,20 @@ namespace VV.Utility
                     {
                         height = buttonAttr.size,
                         marginTop = buttonAttr.space,
-                        marginBottom = buttonAttr.space
+                        marginBottom = buttonAttr.space,
+                        backgroundColor = new StyleColor(buttonAttr.color)
                     }
                 };
 
-                if (ColorUtility.TryParseHtmlString(buttonAttr.color, out var parsedColor))
-                    button.style.backgroundColor = new StyleColor(parsedColor);
-
                 root.Add(button);
             }
-
+        
             return root;
         }
+
+        #endregion
+
+        #region IMGUI
 
         public override void OnInspectorGUI()
         {
@@ -312,9 +319,7 @@ namespace VV.Utility
 
                 GUILayout.Space(buttonAttr.space);
 
-                GUI.backgroundColor = ColorUtility.TryParseHtmlString(buttonAttr.color, out var parsedColor)
-                    ? parsedColor
-                    : Color.gray;
+                GUI.backgroundColor = buttonAttr.color;
 
                 var buttonName = string.IsNullOrEmpty(buttonAttr.name) ? method.Name : buttonAttr.name;
 
@@ -326,6 +331,8 @@ namespace VV.Utility
                 GUI.backgroundColor = Color.white;
             }
         }
+        
+        #endregion
     }
 #endif
 }
