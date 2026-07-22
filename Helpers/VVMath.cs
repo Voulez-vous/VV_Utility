@@ -109,5 +109,7 @@ namespace VV.Utility
             }
             return endVal;
         }
+        
+        public static float Remap(float from1, float to1, float from2, float to2, float value) => Mathf.Lerp(from2, to2, Mathf.InverseLerp(from1, to1, value));
     }
 }
