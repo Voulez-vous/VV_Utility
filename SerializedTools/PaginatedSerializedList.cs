@@ -13,6 +13,7 @@ namespace VV.Utility.SerializedTools
         private  List<T> items = new();
         [SerializeField] private  List<T> visibleItems = new();
 
+        [SerializeField] private bool foldout = false;
         [SerializeField] private int page;
         [SerializeField] private int itemsPerPage = 10;
 
@@ -48,6 +49,7 @@ namespace VV.Utility.SerializedTools
             int start = Page * ItemsPerPage;
             int count = Math.Min(ItemsPerPage, Count - start);
             visibleItems.AddRange(items.GetRange(start, count));
+            foldout = true;
         }
 
         public IEnumerable<T> GetPageItems()
