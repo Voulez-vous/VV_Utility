@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace VV.Utility.Tools
 {
-    public class MaterialController : MonoBehaviour
+    public class MaterialFloatController : MonoBehaviour
     {
         private static int _shaderPropertyID;
             
