@@ -10,7 +10,7 @@ namespace VV.Scoring
     [Serializable]
     public class SerializedValueWrapper
     {
-        [SerializeReference]
+        [SerializeReference, SubclassSelector]
         private ISerializedValue value;
 
         public object Value
