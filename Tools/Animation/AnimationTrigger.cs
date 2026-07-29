@@ -25,18 +25,18 @@ namespace VV.Utility.Tools
         [SerializeField]
         private List<AnimationEventEntry> animationEvents = new();
 
-        private Dictionary<string, AnimationEventEntry> eventLookup;
+        public Dictionary<string, AnimationEventEntry> EventLookup { get; private set; } = new();
 
         private void Awake()
         {
-            eventLookup = new Dictionary<string, AnimationEventEntry>();
+            EventLookup.Clear();
 
             foreach (AnimationEventEntry entry in animationEvents)
             {
                 if (string.IsNullOrEmpty(entry.eventName))
                     continue;
 
-                eventLookup.TryAdd(entry.eventName, entry);
+                EventLookup.TryAdd(entry.eventName, entry);
             }
         }
 
@@ -45,7 +45,7 @@ namespace VV.Utility.Tools
         /// </summary>
         public void Trigger(string eventName)
         {
-            if (!eventLookup.TryGetValue(eventName, out AnimationEventEntry entry))
+            if (!EventLookup.TryGetValue(eventName, out AnimationEventEntry entry))
             {
                 Debug.LogWarning($"[AnimationTrigger] No animation event named '{eventName}' on {name}");
                 return;
