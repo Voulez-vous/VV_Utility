@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 using VV.Utility;
 #if !UNITY_EDITOR && UNITY_WEBGL
 using System.Threading.Tasks;
@@ -41,6 +43,7 @@ namespace IniFiles
             sections.TryGetValue(sectionName, out IniSection section) ? section.values.GetValueOrDefault(key) : null;
 
 #if !UNITY_EDITOR && UNITY_WEBGL
+        [Obsolete]
         public static async Task<IniFile> OpenIniFile(string filePath)
         {
             Debug.Log("OpenIniFile WEB GL : " + filePath);
@@ -57,12 +60,24 @@ namespace IniFiles
             return ParseIniFile(fileUnityWebRequest.downloadHandler.text);
         }
 #else
+        public static async Task<IniFile> OpenRemoteIniFile(string url)
+        {
+            UnityWebRequest fileUnityWebRequest = new UnityWebRequest(url)
+            {
+                downloadHandler = new DownloadHandlerBuffer()
+            };
+
+            await fileUnityWebRequest.SendWebRequest();
+
+            if (fileUnityWebRequest.result != UnityWebRequest.Result.Success) return null;
+
+            return ParseIniFile(fileUnityWebRequest.downloadHandler.text);
+        }
+        
         public static IniFile OpenIniFile(string filePath)
         {
-            Debug.Log("OpenIniFile : " + filePath);
             if (!File.Exists(filePath)) return null;
             var textContent = File.ReadAllText(filePath);
-            Debug.Log("OpenIniFile : " + textContent);
             return ParseIniFile(textContent);
         }
 #endif
