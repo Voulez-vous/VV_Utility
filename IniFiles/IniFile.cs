@@ -59,7 +59,7 @@ namespace IniFiles
 
             return ParseIniFile(fileUnityWebRequest.downloadHandler.text);
         }
-#else
+#endif
         public static async Task<IniFile> OpenRemoteIniFile(string url)
         {
             UnityWebRequest fileUnityWebRequest = new UnityWebRequest(url)
@@ -80,8 +80,6 @@ namespace IniFiles
             var textContent = File.ReadAllText(filePath);
             return ParseIniFile(textContent);
         }
-#endif
-        
         public static IniFile ParseIniFile(string iniFileContent)
         {
             var sections = new Dictionary<string, IniSection>();
